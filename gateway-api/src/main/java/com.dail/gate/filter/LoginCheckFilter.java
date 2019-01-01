@@ -1,0 +1,131 @@
+package com.dail.gate.filter;
+
+import com.dail.constant.CookieConstant;
+import com.dail.constant.PrefixConstant;
+import com.dail.constant.RedisConstant;
+import com.dail.dto.CacheResult;
+import com.dail.gate.dto.UserDto;
+import com.dail.gate.service.IgnoreUrlService;
+import com.dail.util.RedisClient;
+import com.dail.utils.CookieUtils;
+import com.dail.utils.StringUtil;
+import com.netflix.zuul.ZuulFilter;
+import com.netflix.zuul.context.RequestContext;
+import com.netflix.zuul.exception.ZuulException;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * @Auther: dailiang
+ * @Date: 2018/12/27 17:38
+ * @Description:
+ */
+@Slf4j
+@Component
+public class LoginCheckFilter extends ZuulFilter {
+
+    @Autowired
+    private RedisClient redisClient;
+    @Autowired
+    private IgnoreUrlService ignoreUrlService;
+
+    @Override
+    public String filterType() {
+        return FilterConstants.PRE_TYPE;
+    }
+
+    @Override
+    public int filterOrder() {
+        // 通过int值来定义过滤器的执行顺序，数值越小优先级越高。
+        return 1;
+    }
+
+    @Override
+    public boolean shouldFilter() {
+        // 返回一个boolean类型来判断该过滤器是否要执行。我们可以通过此方法来指定过滤器的有效范围。
+        HttpServletRequest request = RequestContext.getCurrentContext().getRequest();
+        String requestUri = request.getRequestURI();
+        // 访问的url是否可以忽略登录校验
+//        return !ignoreUrlService.loginCheckUrl(requestUri);
+        return false;
+    }
+
+    @Override
+    public Object run() throws ZuulException {
+        RequestContext ctx = RequestContext.getCurrentContext();
+        HttpServletRequest request = ctx.getRequest();
+//        if (request.getMethod().equals(RequestMethod.OPTIONS)) {
+//            return null;
+//        }
+        //先从 cookie 中取 token，cookie 中取失败再从 header 中取，两重校验
+        //通过工具类从 Cookie 中取出 token
+        Cookie tokenCookie = CookieUtils.getCookieByName(request, "token");
+        String token = tokenCookie.getValue();
+        if (tokenCookie == null || StringUtil.isBlankOrEmpty(tokenCookie.getValue())) {
+            token = request.getHeader("token");
+            if (StringUtil.isBlankOrEmpty(token)) {
+                setUnauthorizedResponse(ctx);
+                return null;
+            }
+        }
+        // 校验并设置token信息
+        checkTokenInfo(ctx, token);
+        return null;
+    }
+
+    private void checkTokenInfo(RequestContext requestContext, String token) {
+        CacheResult<UserDto> result = redisClient.get(PrefixConstant.TOKEN_KEY + token);
+        if (result.getData() == null) {
+            setResponseMsg(requestContext, "登录已过期！");
+        } else {
+            Long userid = result.getData().getId();
+            CacheResult<String> uniqueToken = redisClient.get(PrefixConstant.USERID_KEY + userid);
+            if (!token.equals(uniqueToken.getData())) {
+                // 其他人登录此账号，被踢出登录，删除token缓存信息
+                redisClient.delete(PrefixConstant.TOKEN_KEY + token);
+                setResponseMsg(requestContext, "您的账号在其他地方登录，请检查密码是否泄漏！");
+            }
+        }
+        setTokenInfo(requestContext.getResponse(), token, result.getData());
+    }
+
+    /**
+     * 设置token
+     * @param response
+     * @param token
+     * @param user
+     */
+    private void setTokenInfo(HttpServletResponse response, String token, UserDto user) {
+        // 保存token到redis缓存中
+        redisClient.set(PrefixConstant.TOKEN_KEY + token, user, RedisConstant.tokenToExpireDefault);
+        CookieUtils.setCookie(response, CookieConstant.COOKI_NAME_TOKEN, token, RedisConstant.tokenToExpireDefault);
+    }
+
+    /**
+     *  设置无权限状态 401
+     * @param requestContext
+     */
+    private void setUnauthorizedResponse(RequestContext requestContext) {
+        requestContext.setSendZuulResponse(false);
+        requestContext.setResponseStatusCode(HttpStatus.SC_UNAUTHORIZED);
+        requestContext.setResponseBody("没有登录权限！");
+    }
+
+    /**
+     *  设置返回信息 401
+     * @param requestContext
+     */
+    private void setResponseMsg(RequestContext requestContext, String msg) {
+        requestContext.setSendZuulResponse(false);
+        requestContext.setResponseStatusCode(HttpStatus.SC_UNAUTHORIZED);
+        requestContext.setResponseBody(msg);
+    }
+}
