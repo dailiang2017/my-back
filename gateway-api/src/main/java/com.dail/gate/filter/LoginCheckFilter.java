@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 /**
  * @Auther: dailiang
@@ -54,21 +56,20 @@ public class LoginCheckFilter extends ZuulFilter {
         HttpServletRequest request = RequestContext.getCurrentContext().getRequest();
         String requestUri = request.getRequestURI();
         // 访问的url是否可以忽略登录校验
-//        return !ignoreUrlService.loginCheckUrl(requestUri);
-        return false;
+        return !ignoreUrlService.loginCheckUrl(requestUri);
     }
 
     @Override
     public Object run() throws ZuulException {
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
-//        if (request.getMethod().equals(RequestMethod.OPTIONS)) {
-//            return null;
-//        }
+        if (request.getMethod().equals(RequestMethod.OPTIONS)) {
+            return null;
+        }
         //先从 cookie 中取 token，cookie 中取失败再从 header 中取，两重校验
         //通过工具类从 Cookie 中取出 token
         Cookie tokenCookie = CookieUtils.getCookieByName(request, "token");
-        String token = tokenCookie.getValue();
+        String token = "";
         if (tokenCookie == null || StringUtil.isBlankOrEmpty(tokenCookie.getValue())) {
             token = request.getHeader("token");
             if (StringUtil.isBlankOrEmpty(token)) {
@@ -76,6 +77,7 @@ public class LoginCheckFilter extends ZuulFilter {
                 return null;
             }
         }
+        token = tokenCookie.getValue();
         // 校验并设置token信息
         checkTokenInfo(ctx, token);
         return null;
@@ -116,7 +118,11 @@ public class LoginCheckFilter extends ZuulFilter {
     private void setUnauthorizedResponse(RequestContext requestContext) {
         requestContext.setSendZuulResponse(false);
         requestContext.setResponseStatusCode(HttpStatus.SC_UNAUTHORIZED);
-        requestContext.setResponseBody("没有登录权限！");
+        try {
+            requestContext.setResponseBody(URLEncoder.encode("没有登录权限！", "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

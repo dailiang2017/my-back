@@ -1,10 +1,14 @@
 package com.dail.user.controller;
 
+import com.dail.dto.BaseResult;
+import com.dail.user.model.User;
 import com.dail.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * @Auther: dailiang
@@ -23,7 +27,7 @@ public class UserController {
     }
 
     @GetMapping(value="/findAll")
-    public Object findAll() {
-        return userService.findAll();
+    public BaseResult findAll() {
+        return BaseResult.success(userService.findAll());
     }
 }
