@@ -3,6 +3,7 @@ package com.dail.util;
 import com.dail.constant.RedisConstant;
 import com.dail.dto.CacheResult;
 import com.dail.utils.SerializeUtil;
+import com.dail.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,9 +29,9 @@ public class RedisClient {
      * @param key
      * @return
      */
-    public CacheResult get(String key) {
+    public <T> CacheResult<T> get(String key, Class<T> tClass) {
         CacheResult result = new CacheResult();
-        result.setData(SerializeUtil.unserialize(this.getBase(key)));
+        result.setData(StringUtil.stringToBean(this.getBase(key), tClass));
         return result;
     }
 
@@ -40,8 +41,8 @@ public class RedisClient {
      * @param value
      * @return
      */
-    public String set(String key, Object value) {
-        return this.setBase(key, SerializeUtil.serialize(value), RedisConstant.redisToExpireDefault);
+    public <T> String set(String key, T value) {
+        return this.setBase(key, StringUtil.beanToString(value), RedisConstant.redisToExpireDefault);
     }
 
     /**
@@ -51,8 +52,8 @@ public class RedisClient {
      * @param secondsToExpire 单位秒
      * @return
      */
-    public String set(String key, Object value, int secondsToExpire) {
-        return this.setBase(key, SerializeUtil.serialize(value), secondsToExpire);
+    public <T> String set(String key, T value, int secondsToExpire) {
+        return this.setBase(key, StringUtil.beanToString(value), secondsToExpire);
     }
 
     /**

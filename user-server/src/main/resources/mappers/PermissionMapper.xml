@@ -395,4 +395,15 @@
       is_deleted = #{isDeleted,jdbcType=CHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="queryUserMenu" resultMap="BaseResultMap">
+    SELECT
+        p.*
+    FROM
+        t_user_role ur
+    INNER JOIN t_role r ON ur.role_id = r.id
+    INNER JOIN t_role_permission rp ON rp.role_id = r.id
+    INNER JOIN t_permission p ON rp.permission_id = p.id
+    WHERE ur.user_id = #{userId} AND p.resourceType = 1
+  </select>
 </mapper>

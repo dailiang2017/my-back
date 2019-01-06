@@ -2,8 +2,9 @@ package com.dail.user.mapper;
 
 import com.dail.user.model.Permission;
 import com.dail.user.model.PermissionExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface PermissionMapper {
     /**
@@ -93,4 +94,6 @@ public interface PermissionMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(Permission record);
+
+    List<Permission> queryUserMenu(@Param(value = "userId") String userId);
 }

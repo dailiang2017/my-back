@@ -15,5 +15,5 @@ public class RedisConstant {
     /**
      * token|cookie缓存 默认超时时间一分钟，单位秒
      */
-    public static final int tokenToExpireDefault = 60;
+    public static final int tokenToExpireDefault = 600;
 }

@@ -84,12 +84,12 @@ public class LoginCheckFilter extends ZuulFilter {
     }
 
     private void checkTokenInfo(RequestContext requestContext, String token) {
-        CacheResult<UserDto> result = redisClient.get(PrefixConstant.TOKEN_KEY + token);
+        CacheResult<UserDto> result = redisClient.get(PrefixConstant.TOKEN_KEY + token, UserDto.class);
         if (result.getData() == null) {
             setResponseMsg(requestContext, "登录已过期！");
         } else {
             Long userid = result.getData().getId();
-            CacheResult<String> uniqueToken = redisClient.get(PrefixConstant.USERID_KEY + userid);
+            CacheResult<String> uniqueToken = redisClient.get(PrefixConstant.USERID_KEY + userid, String.class);
             if (!token.equals(uniqueToken.getData())) {
                 // 其他人登录此账号，被踢出登录，删除token缓存信息
                 redisClient.delete(PrefixConstant.TOKEN_KEY + token);

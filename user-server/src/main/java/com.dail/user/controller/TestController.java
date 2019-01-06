@@ -22,7 +22,7 @@ public class TestController {
 
     @GetMapping(value="/getKeyFromRedis/{key}")
     public String getKeyFromRedis(@PathVariable(name = "key") String key) {
-        CacheResult<String> cacheResult = redisClient.get(key);
+        CacheResult<String> cacheResult = redisClient.get(key, String.class);
         return cacheResult.getData();
     }
 
