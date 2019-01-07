@@ -2,6 +2,10 @@ package com.dail.mapper;
 
 import java.util.List;
 
+/**
+ * todo 待实现
+ * @param <T>
+ */
 public interface BaseMapper<T> {
 
     int insert(T t);
@@ -14,11 +18,9 @@ public interface BaseMapper<T> {
 
     int updateByPrimaryKeySelective(T t);
 
-    T select(long id);
+    T selectByPrimaryKey(long id);
 
     List<T> selectList(T t);
-
-    long getTotalCount();
 
     long getCount(T t);
 }

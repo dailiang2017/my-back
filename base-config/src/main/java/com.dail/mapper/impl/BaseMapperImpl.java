@@ -5,12 +5,19 @@ import com.dail.mapper.BaseMapper;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * todo 待实现
+ * @param <T>
+ */
 public class BaseMapperImpl<T> implements BaseMapper<T> {
 
     private Logger logger = Logger.getLogger("BaseMapperImpl");
 
     private Class<T> tClass;
 
+    protected BaseMapperImpl() {
+
+    }
 
     @Override
     public int insert(T t) {
@@ -38,18 +45,13 @@ public class BaseMapperImpl<T> implements BaseMapper<T> {
     }
 
     @Override
-    public T select(long id) {
+    public T selectByPrimaryKey(long id) {
         return null;
     }
 
     @Override
     public List<T> selectList(T t) {
         return null;
-    }
-
-    @Override
-    public long getTotalCount() {
-        return 0;
     }
 
     @Override
