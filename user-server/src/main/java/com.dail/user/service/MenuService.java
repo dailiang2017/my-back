@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface MenuService {
 
-    public List<MenuDTO> queryUserMenu(String userId);
+    public List<MenuDTO> queryUserMenu(Long userId);
 }

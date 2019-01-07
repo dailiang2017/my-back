@@ -95,5 +95,5 @@ public interface PermissionMapper {
      */
     int updateByPrimaryKey(Permission record);
 
-    List<Permission> queryUserMenu(@Param(value = "userId") String userId);
+    List<Permission> queryUserMenu(@Param(value = "userId") Long userId);
 }

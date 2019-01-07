@@ -1,4 +1,4 @@
-package com.dail.user.controller;
+package com.dail;
 
 import com.alibaba.fastjson.JSON;
 import com.dail.user.model.User;

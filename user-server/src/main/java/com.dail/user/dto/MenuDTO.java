@@ -20,14 +20,19 @@ public class MenuDTO {
     private String name;
 
     /**
-     * 资源类型 1-menu 2-button
-     */
-    private Byte resourcetype;
-
-    /**
      * 资源路径
      */
     private String url;
+
+    /**
+     * 菜单级别1-2-3
+     */
+    private Integer level;
+
+    /**
+     * 排序
+     */
+    private Integer sortNum;
 
     /**
      * 子菜单

@@ -4,11 +4,12 @@ import com.dail.constant.CookieConstant;
 import com.dail.constant.PrefixConstant;
 import com.dail.constant.RedisConstant;
 import com.dail.dto.CacheResult;
-import com.dail.gate.dto.UserDto;
+import com.dail.dto.UserDTO;
 import com.dail.gate.service.IgnoreUrlService;
 import com.dail.util.RedisClient;
 import com.dail.utils.CookieUtils;
 import com.dail.utils.StringUtil;
+import com.dail.utils.ThreadLocalUtil;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
@@ -84,7 +85,7 @@ public class LoginCheckFilter extends ZuulFilter {
     }
 
     private void checkTokenInfo(RequestContext requestContext, String token) {
-        CacheResult<UserDto> result = redisClient.get(PrefixConstant.TOKEN_KEY + token, UserDto.class);
+        CacheResult<UserDTO> result = redisClient.get(PrefixConstant.TOKEN_KEY + token, UserDTO.class);
         if (result.getData() == null) {
             setResponseMsg(requestContext, "登录已过期！");
         } else {
@@ -97,6 +98,7 @@ public class LoginCheckFilter extends ZuulFilter {
             }
         }
         setTokenInfo(requestContext.getResponse(), token, result.getData());
+        ThreadLocalUtil.setTokenInfo(result.getData());
     }
 
     /**
@@ -105,7 +107,7 @@ public class LoginCheckFilter extends ZuulFilter {
      * @param token
      * @param user
      */
-    private void setTokenInfo(HttpServletResponse response, String token, UserDto user) {
+    private void setTokenInfo(HttpServletResponse response, String token, UserDTO user) {
         // 保存token到redis缓存中
         redisClient.set(PrefixConstant.TOKEN_KEY + token, user, RedisConstant.tokenToExpireDefault);
         CookieUtils.setCookie(response, CookieConstant.COOKI_NAME_TOKEN, token, RedisConstant.tokenToExpireDefault);
