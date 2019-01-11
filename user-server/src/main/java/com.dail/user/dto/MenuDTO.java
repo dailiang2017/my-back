@@ -35,6 +35,11 @@ public class MenuDTO {
     private Integer sortNum;
 
     /**
+     * 图标
+     */
+    private String icon;
+
+    /**
      * 子菜单
      */
     private List<MenuDTO> children;

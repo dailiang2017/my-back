@@ -11,4 +11,9 @@ public class CookieConstant {
      * cookie的name
      */
     public static final String COOKI_NAME_TOKEN = "token";
+
+    /**
+     * 用户信息的key
+     */
+    public static final String USER_INFO_KEY = "user_key";
 }

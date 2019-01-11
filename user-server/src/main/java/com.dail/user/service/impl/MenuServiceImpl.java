@@ -33,9 +33,15 @@ public class MenuServiceImpl implements MenuService {
         for (MenuDTO dto : oneList) {
             dto.setChildren(getChildNodes(treeList, dto.getId()));
         }
-        return null;
+        return oneList;
     }
 
+    /**
+     * 递归查询子节点
+     * @param treeList
+     * @param id
+     * @return
+     */
     private List<MenuDTO> getChildNodes(List<MenuDTO> treeList, Long id) {
         List<MenuDTO> childList = new ArrayList<>();
         for (MenuDTO dto : treeList) {

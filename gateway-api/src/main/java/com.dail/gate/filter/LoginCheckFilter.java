@@ -9,7 +9,6 @@ import com.dail.gate.service.IgnoreUrlService;
 import com.dail.util.RedisClient;
 import com.dail.utils.CookieUtils;
 import com.dail.utils.StringUtil;
-import com.dail.utils.ThreadLocalUtil;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
@@ -69,10 +68,10 @@ public class LoginCheckFilter extends ZuulFilter {
         }
         //先从 cookie 中取 token，cookie 中取失败再从 header 中取，两重校验
         //通过工具类从 Cookie 中取出 token
-        Cookie tokenCookie = CookieUtils.getCookieByName(request, "token");
+        Cookie tokenCookie = CookieUtils.getCookieByName(request, CookieConstant.COOKI_NAME_TOKEN);
         String token = "";
         if (tokenCookie == null || StringUtil.isBlankOrEmpty(tokenCookie.getValue())) {
-            token = request.getHeader("token");
+            token = request.getHeader(CookieConstant.COOKI_NAME_TOKEN);
             if (StringUtil.isBlankOrEmpty(token)) {
                 setUnauthorizedResponse(ctx);
                 return null;
@@ -98,7 +97,7 @@ public class LoginCheckFilter extends ZuulFilter {
             }
         }
         setTokenInfo(requestContext.getResponse(), token, result.getData());
-        ThreadLocalUtil.setTokenInfo(result.getData());
+        requestContext.addZuulRequestHeader(CookieConstant.USER_INFO_KEY, StringUtil.beanToString(result.getData()));
     }
 
     /**
