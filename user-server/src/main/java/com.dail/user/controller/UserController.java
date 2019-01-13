@@ -1,12 +1,11 @@
 package com.dail.user.controller;
 
 import com.dail.dto.BaseResult;
+import com.dail.user.dto.UserQueryDTO;
 import com.dail.user.model.User;
 import com.dail.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,5 +28,10 @@ public class UserController {
     @GetMapping(value="/findAll")
     public BaseResult findAll() {
         return BaseResult.success(userService.findAll());
+    }
+
+    @PostMapping("/queryUserPage")
+    public BaseResult queryUserPage(@RequestBody UserQueryDTO queryDTO) {
+        return BaseResult.success(userService.queryUserPage(queryDTO));
     }
 }

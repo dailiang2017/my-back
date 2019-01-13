@@ -8,8 +8,11 @@ import lombok.Data;
  * @Description:
  */
 @Data
-public class UserDTO {
+public class TokenInfo {
 
+    /**
+     * 用户id
+     */
     private Long id;
 
     /**
@@ -21,4 +24,9 @@ public class UserDTO {
      * 真实姓名
      */
     private String realname;
+
+    /**
+     * token信息
+     */
+    private String token;
 }

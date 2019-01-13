@@ -13,4 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 public interface LoginService {
 
     public BaseResult login(HttpServletResponse response, LoginDTO loginDTO);
+
+    public BaseResult loginOut(HttpServletResponse response);
 }

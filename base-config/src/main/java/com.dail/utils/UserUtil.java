@@ -1,7 +1,7 @@
 package com.dail.utils;
 
 import com.dail.constant.CookieConstant;
-import com.dail.dto.UserDTO;
+import com.dail.dto.TokenInfo;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -18,10 +18,10 @@ public class UserUtil {
      * 获得用户信息
      * @return
      */
-    public static UserDTO getUserInfo() {
+    public static TokenInfo getUserInfo() {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        String userinfo = request.getHeader(CookieConstant.USER_INFO_KEY);
-        UserDTO userDTO = StringUtil.stringToBean(userinfo, UserDTO.class);
-        return userDTO;
+        TokenInfo tokenInfo = StringUtil.stringToBean(request.getHeader(CookieConstant.USER_INFO_KEY), TokenInfo.class);
+        tokenInfo.setToken(request.getHeader(CookieConstant.COOKIE_NAME_TOKEN));
+        return tokenInfo;
     }
 }

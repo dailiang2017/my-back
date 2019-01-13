@@ -22,12 +22,6 @@ public class BaseResult implements Serializable {
         return result;
     }
 
-    public static BaseResult success(String msg) {
-        BaseResult result = new BaseResult();
-        result.setMsg(msg);
-        return result;
-    }
-
     public static BaseResult success(Object data) {
         BaseResult result = new BaseResult();
         result.setData(data);

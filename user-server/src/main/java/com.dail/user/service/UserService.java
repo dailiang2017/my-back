@@ -1,6 +1,8 @@
 package com.dail.user.service;
 
+import com.dail.user.dto.UserQueryDTO;
 import com.dail.user.model.User;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -25,4 +27,6 @@ public interface UserService {
     List<User> findAll();
 
     User findByName(String username);
+
+    PageInfo<List<User>> queryUserPage(UserQueryDTO queryDTO);
 }

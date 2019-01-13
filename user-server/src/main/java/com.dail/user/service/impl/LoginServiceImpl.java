@@ -4,6 +4,7 @@ import com.dail.constant.CookieConstant;
 import com.dail.constant.PrefixConstant;
 import com.dail.constant.RedisConstant;
 import com.dail.dto.BaseResult;
+import com.dail.dto.TokenInfo;
 import com.dail.user.dto.LoginDTO;
 import com.dail.user.dto.UserDTO;
 import com.dail.user.model.User;
@@ -13,6 +14,7 @@ import com.dail.util.RedisClient;
 import com.dail.utils.BeanUtil;
 import com.dail.utils.CookieUtils;
 import com.dail.utils.StringUtil;
+import com.dail.utils.UserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,6 +60,16 @@ public class LoginServiceImpl implements LoginService {
         return BaseResult.success();
     }
 
+    @Override
+    public BaseResult loginOut(HttpServletResponse response) {
+        TokenInfo tokenInfo = UserUtil.getUserInfo();
+        // 删除token信息
+        redisClient.delete(PrefixConstant.TOKEN_KEY + tokenInfo.getToken());
+        redisClient.delete(PrefixConstant.USERID_KEY + tokenInfo.getId());
+        CookieUtils.removeCookie(response, CookieConstant.COOKIE_NAME_TOKEN);
+        return BaseResult.success();
+    }
+
     /**
      * 增加cookie信息，并把token保存到redis
      * @param response
@@ -69,7 +81,7 @@ public class LoginServiceImpl implements LoginService {
         redisClient.set(PrefixConstant.TOKEN_KEY + token, userDTO, RedisConstant.tokenToExpireDefault);
         // 缓存用户id和token的关系，用以确认同一用户同时只能有一个人可以登录
         redisClient.set(PrefixConstant.USERID_KEY + userDTO.getId(), token);
-        CookieUtils.setCookie(response, CookieConstant.COOKI_NAME_TOKEN, token, RedisConstant.tokenToExpireDefault);
+        CookieUtils.setCookie(response, CookieConstant.COOKIE_NAME_TOKEN, token, RedisConstant.tokenToExpireDefault);
     }
 
 }

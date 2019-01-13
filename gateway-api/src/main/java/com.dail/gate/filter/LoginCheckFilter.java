@@ -4,7 +4,7 @@ import com.dail.constant.CookieConstant;
 import com.dail.constant.PrefixConstant;
 import com.dail.constant.RedisConstant;
 import com.dail.dto.CacheResult;
-import com.dail.dto.UserDTO;
+import com.dail.dto.TokenInfo;
 import com.dail.gate.service.IgnoreUrlService;
 import com.dail.util.RedisClient;
 import com.dail.utils.CookieUtils;
@@ -68,10 +68,10 @@ public class LoginCheckFilter extends ZuulFilter {
         }
         //先从 cookie 中取 token，cookie 中取失败再从 header 中取，两重校验
         //通过工具类从 Cookie 中取出 token
-        Cookie tokenCookie = CookieUtils.getCookieByName(request, CookieConstant.COOKI_NAME_TOKEN);
+        Cookie tokenCookie = CookieUtils.getCookieByName(request, CookieConstant.COOKIE_NAME_TOKEN);
         String token = "";
         if (tokenCookie == null || StringUtil.isBlankOrEmpty(tokenCookie.getValue())) {
-            token = request.getHeader(CookieConstant.COOKI_NAME_TOKEN);
+            token = request.getHeader(CookieConstant.COOKIE_NAME_TOKEN);
             if (StringUtil.isBlankOrEmpty(token)) {
                 setUnauthorizedResponse(ctx);
                 return null;
@@ -84,7 +84,7 @@ public class LoginCheckFilter extends ZuulFilter {
     }
 
     private void checkTokenInfo(RequestContext requestContext, String token) {
-        CacheResult<UserDTO> result = redisClient.get(PrefixConstant.TOKEN_KEY + token, UserDTO.class);
+        CacheResult<TokenInfo> result = redisClient.get(PrefixConstant.TOKEN_KEY + token, TokenInfo.class);
         if (result.getData() == null) {
             setResponseMsg(requestContext, "登录已过期！");
         } else {
@@ -98,6 +98,7 @@ public class LoginCheckFilter extends ZuulFilter {
         }
         setTokenInfo(requestContext.getResponse(), token, result.getData());
         requestContext.addZuulRequestHeader(CookieConstant.USER_INFO_KEY, StringUtil.beanToString(result.getData()));
+        requestContext.addZuulRequestHeader(CookieConstant.COOKIE_NAME_TOKEN, token);
     }
 
     /**
@@ -106,10 +107,10 @@ public class LoginCheckFilter extends ZuulFilter {
      * @param token
      * @param user
      */
-    private void setTokenInfo(HttpServletResponse response, String token, UserDTO user) {
+    private void setTokenInfo(HttpServletResponse response, String token, TokenInfo user) {
         // 保存token到redis缓存中
         redisClient.set(PrefixConstant.TOKEN_KEY + token, user, RedisConstant.tokenToExpireDefault);
-        CookieUtils.setCookie(response, CookieConstant.COOKI_NAME_TOKEN, token, RedisConstant.tokenToExpireDefault);
+        CookieUtils.setCookie(response, CookieConstant.COOKIE_NAME_TOKEN, token, RedisConstant.tokenToExpireDefault);
     }
 
     /**

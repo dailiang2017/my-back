@@ -1,6 +1,6 @@
 package com.dail.utils;
 
-import com.dail.dto.UserDTO;
+import com.dail.dto.TokenInfo;
 
 /**
  * @Auther: dailiang
@@ -9,13 +9,13 @@ import com.dail.dto.UserDTO;
  */
 public class ThreadLocalUtil {
 
-    private static ThreadLocal<UserDTO> tokenInfo = new ThreadLocal<>();
+    private static ThreadLocal<TokenInfo> tokenInfo = new ThreadLocal<>();
 
-    public static UserDTO getTokenInfo() {
+    public static TokenInfo getTokenInfo() {
         return tokenInfo.get();
     }
 
-    public static void setTokenInfo(UserDTO userDTO) {
+    public static void setTokenInfo(TokenInfo userDTO) {
         tokenInfo.set(userDTO);
     }
 }

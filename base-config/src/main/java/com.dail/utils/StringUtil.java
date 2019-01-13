@@ -18,6 +18,15 @@ public class StringUtil {
         return (str == null || str.isEmpty()) ? true : false;
     }
 
+    /**
+     * 判断string类型非空
+     * @param str
+     * @return
+     */
+    public static boolean isNotEmpty(String str) {
+        return !isBlankOrEmpty(str);
+    }
+
     public static <T> String beanToString(T value) {
         if(value == null) {
             return null;
@@ -48,5 +57,14 @@ public class StringUtil {
         }else {
             return JSON.toJavaObject(JSON.parseObject(str), clazz);
         }
+    }
+
+    /**
+     * 设置模糊查询
+     * @param name
+     * @return
+     */
+    public static String setLikeSQL(String name) {
+        return "%" + name + "%";
     }
 }

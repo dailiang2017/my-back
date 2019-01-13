@@ -71,4 +71,21 @@ public class CookieUtils {
         response.addCookie(cookie); // addCookie后，如果已经存在相同名字的cookie，则最新的覆盖旧的cookie
         return response;
     }
+
+    /**
+     * 删除cookie
+     * @param response
+     * @param name
+     * @return
+     */
+    public static HttpServletResponse removeCookie(HttpServletResponse response, String name) {
+        // new一个Cookie对象,键值对为参数
+        Cookie cookie = new Cookie(name, null);
+        // tomcat下多应用共享
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        // 将Cookie添加到Response中,使之生效
+        response.addCookie(cookie); // addCookie后，如果已经存在相同名字的cookie，则最新的覆盖旧的cookie
+        return response;
+    }
 }

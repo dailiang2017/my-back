@@ -27,4 +27,9 @@ public class LoginController {
     public BaseResult login(@RequestBody LoginDTO loginDTO, HttpServletResponse response) {
         return loginService.login(response, loginDTO);
     }
+
+    @PostMapping("/loginOut")
+    public BaseResult loginOut(HttpServletResponse response) {
+        return loginService.loginOut(response);
+    }
 }
