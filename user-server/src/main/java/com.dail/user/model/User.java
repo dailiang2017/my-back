@@ -112,7 +112,7 @@ public class User {
      *
      * @mbg.generated
      */
-    private String createId;
+    private Long createId;
 
     /**
      *
@@ -130,7 +130,7 @@ public class User {
      *
      * @mbg.generated
      */
-    private String updateId;
+    private Long updateId;
 
     /**
      *

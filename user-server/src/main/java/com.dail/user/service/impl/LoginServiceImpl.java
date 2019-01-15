@@ -3,6 +3,7 @@ package com.dail.user.service.impl;
 import com.dail.constant.CookieConstant;
 import com.dail.constant.PrefixConstant;
 import com.dail.constant.RedisConstant;
+import com.dail.constant.ReturnConstant;
 import com.dail.dto.BaseResult;
 import com.dail.dto.TokenInfo;
 import com.dail.user.dto.LoginDTO;
@@ -11,10 +12,7 @@ import com.dail.user.model.User;
 import com.dail.user.service.LoginService;
 import com.dail.user.service.UserService;
 import com.dail.util.RedisClient;
-import com.dail.utils.BeanUtil;
-import com.dail.utils.CookieUtils;
-import com.dail.utils.StringUtil;
-import com.dail.utils.UserUtil;
+import com.dail.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,35 +37,28 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     @Transactional
-    public BaseResult login(HttpServletResponse response, LoginDTO loginDTO) {
+    public String login(HttpServletResponse response, LoginDTO loginDTO) {
         String username = loginDTO.getUsername();
         String password = loginDTO.getPassword();
-        if (StringUtil.isBlankOrEmpty(username) || StringUtil.isBlankOrEmpty(password)) {
-            return BaseResult.error("用户名或密码不能为空！");
-        }
+        ExceptionUtil.isTrue(StringUtil.isBlankOrEmpty(username) || StringUtil.isBlankOrEmpty(password)
+                , "用户名或密码不能为空！");
         User user = userService.findByName(username);
-        if (user == null) {
-            log.error("LoginService.login ---- 用户名不存在！");
-            return BaseResult.error("用户名或密码错误！");
-        }
-        if (!user.getPassword().equals(password)) {
-            log.error("LoginService.login ---- 密码不正确！");
-            return BaseResult.error("用户名或密码错误！");
-        }
+        ExceptionUtil.isTrue(user == null, "用户名或密码错误！");
+        ExceptionUtil.isTrue(!user.getPassword().equals(password), "用户名或密码错误！");
         // 生成token
         String token = UUID.randomUUID().toString();
         addCookie(response, token, BeanUtil.copyProperties(user, UserDTO.class));
-        return BaseResult.success();
+        return ReturnConstant.OK;
     }
 
     @Override
-    public BaseResult loginOut(HttpServletResponse response) {
+    public String loginOut(HttpServletResponse response) {
         TokenInfo tokenInfo = UserUtil.getUserInfo();
         // 删除token信息
         redisClient.delete(PrefixConstant.TOKEN_KEY + tokenInfo.getToken());
         redisClient.delete(PrefixConstant.USERID_KEY + tokenInfo.getId());
         CookieUtils.removeCookie(response, CookieConstant.COOKIE_NAME_TOKEN);
-        return BaseResult.success();
+        return ReturnConstant.OK;
     }
 
     /**

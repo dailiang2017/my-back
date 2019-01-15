@@ -17,9 +17,9 @@
     <result column="adress" jdbcType="VARCHAR" property="adress" />
     <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
-    <result column="create_id" jdbcType="VARCHAR" property="createId" />
+    <result column="create_id" jdbcType="BIGINT" property="createId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_id" jdbcType="VARCHAR" property="updateId" />
+    <result column="update_id" jdbcType="BIGINT" property="updateId" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="is_deleted" jdbcType="CHAR" property="isDeleted" />
   </resultMap>
@@ -157,8 +157,8 @@
     values (#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{realname,jdbcType=VARCHAR},
       #{password,jdbcType=VARCHAR}, #{salt,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT},
       #{mobile,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{adress,jdbcType=VARCHAR},
-      #{lastLoginTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, #{createId,jdbcType=VARCHAR},
-      #{createTime,jdbcType=TIMESTAMP}, #{updateId,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP},
+      #{lastLoginTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, #{createId,jdbcType=BIGINT},
+      #{createTime,jdbcType=TIMESTAMP}, #{updateId,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP},
       #{isDeleted,jdbcType=CHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.dail.user.model.User">
@@ -252,13 +252,13 @@
         #{remark,jdbcType=VARCHAR},
       </if>
       <if test="createId != null">
-        #{createId,jdbcType=VARCHAR},
+        #{createId,jdbcType=BIGINT},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateId != null">
-        #{updateId,jdbcType=VARCHAR},
+        #{updateId,jdbcType=BIGINT},
       </if>
       <if test="updateTime != null">
         #{updateTime,jdbcType=TIMESTAMP},
@@ -319,13 +319,13 @@
         remark = #{record.remark,jdbcType=VARCHAR},
       </if>
       <if test="record.createId != null">
-        create_id = #{record.createId,jdbcType=VARCHAR},
+        create_id = #{record.createId,jdbcType=BIGINT},
       </if>
       <if test="record.createTime != null">
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.updateId != null">
-        update_id = #{record.updateId,jdbcType=VARCHAR},
+        update_id = #{record.updateId,jdbcType=BIGINT},
       </if>
       <if test="record.updateTime != null">
         update_time = #{record.updateTime,jdbcType=TIMESTAMP},
@@ -355,9 +355,9 @@
       adress = #{record.adress,jdbcType=VARCHAR},
       last_login_time = #{record.lastLoginTime,jdbcType=TIMESTAMP},
       remark = #{record.remark,jdbcType=VARCHAR},
-      create_id = #{record.createId,jdbcType=VARCHAR},
+      create_id = #{record.createId,jdbcType=BIGINT},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      update_id = #{record.updateId,jdbcType=VARCHAR},
+      update_id = #{record.updateId,jdbcType=BIGINT},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       is_deleted = #{record.isDeleted,jdbcType=CHAR}
     <if test="_parameter != null">
@@ -402,13 +402,13 @@
         remark = #{remark,jdbcType=VARCHAR},
       </if>
       <if test="createId != null">
-        create_id = #{createId,jdbcType=VARCHAR},
+        create_id = #{createId,jdbcType=BIGINT},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateId != null">
-        update_id = #{updateId,jdbcType=VARCHAR},
+        update_id = #{updateId,jdbcType=BIGINT},
       </if>
       <if test="updateTime != null">
         update_time = #{updateTime,jdbcType=TIMESTAMP},
@@ -435,9 +435,9 @@
       adress = #{adress,jdbcType=VARCHAR},
       last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
       remark = #{remark,jdbcType=VARCHAR},
-      create_id = #{createId,jdbcType=VARCHAR},
+      create_id = #{createId,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_id = #{updateId,jdbcType=VARCHAR},
+      update_id = #{updateId,jdbcType=BIGINT},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       is_deleted = #{isDeleted,jdbcType=CHAR}
     where id = #{id,jdbcType=BIGINT}

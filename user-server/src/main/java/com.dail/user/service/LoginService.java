@@ -1,6 +1,5 @@
 package com.dail.user.service;
 
-import com.dail.dto.BaseResult;
 import com.dail.user.dto.LoginDTO;
 
 import javax.servlet.http.HttpServletResponse;
@@ -12,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public interface LoginService {
 
-    public BaseResult login(HttpServletResponse response, LoginDTO loginDTO);
+    public String login(HttpServletResponse response, LoginDTO loginDTO);
 
-    public BaseResult loginOut(HttpServletResponse response);
+    public String loginOut(HttpServletResponse response);
 }
