@@ -15,6 +15,7 @@
         <module>user-server</module>
         <module>gateway-api</module>
         <module>db-config</module>
+        <module>my-user-parent</module>
     </modules>
     <name>my-back</name>
 
@@ -155,6 +156,13 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-zuul</artifactId>
+                <version>1.4.6.RELEASE</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-feign -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-feign</artifactId>
                 <version>1.4.6.RELEASE</version>
             </dependency>
 

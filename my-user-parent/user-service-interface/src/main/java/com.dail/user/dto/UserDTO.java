@@ -1,0 +1,33 @@
+package com.dail.user.dto;
+
+import java.util.Date;
+
+/**
+ * @Auther: dailiang
+ * @Date: 2018/12/29 17:33
+ * @Description:
+ */
+public class UserDTO {
+
+//    public void preInsert(Long userId) {
+//        Date now = new Date();
+//        this.setCreateId(userId);
+//        this.setUpdateId(userId);
+//        this.setCreateTime(now);
+//        this.setUpdateTime(now);
+//    }
+
+//    public void preUpdate(Long userId) {
+//        Date now = new Date();
+//        this.setUpdateId(userId);
+//        this.setUpdateTime(now);
+//    }
+//
+//    public void preDelete(Long userId, Long id) {
+//        Date now = new Date();
+//        this.setId(id);
+//        this.setUpdateId(userId);
+//        this.setUpdateTime(now);
+//        this.setIsDeleted(IsDeletedEnum.Y.getCode());
+//    }
+}
