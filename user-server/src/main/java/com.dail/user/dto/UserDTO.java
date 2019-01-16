@@ -1,5 +1,6 @@
 package com.dail.user.dto;
 
+import com.dail.enums.IsDeletedEnum;
 import com.dail.user.model.User;
 
 import java.io.Serializable;
@@ -24,5 +25,13 @@ public class UserDTO extends User implements Serializable {
         Date now = new Date();
         this.setUpdateId(userId);
         this.setUpdateTime(now);
+    }
+
+    public void preDelete(Long userId, Long id) {
+        Date now = new Date();
+        this.setId(id);
+        this.setUpdateId(userId);
+        this.setUpdateTime(now);
+        this.setIsDeleted(IsDeletedEnum.Y.getCode());
     }
 }

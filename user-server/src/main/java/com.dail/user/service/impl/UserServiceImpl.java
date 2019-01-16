@@ -1,5 +1,6 @@
 package com.dail.user.service.impl;
 
+import com.dail.enums.IsDeletedEnum;
 import com.dail.enums.UserStatusEnum;
 import com.dail.exception.BusinessException;
 import com.dail.user.dto.UserDTO;
@@ -51,6 +52,7 @@ public class UserServiceImpl implements UserService {
         if (StringUtil.isNotEmpty(queryDTO.getUsername())) {
             criteria.andUsernameLike(StringUtil.setLikeSQL(queryDTO.getUsername()));
         }
+        criteria.andIsDeletedEqualTo(IsDeletedEnum.N.getCode());
         return PageHelper.startPage(queryDTO.getPageNo(), queryDTO.getPageSize()).doSelectPageInfo(() -> {
             userMapper.selectByExample(userExample);
         });

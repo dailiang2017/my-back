@@ -51,4 +51,16 @@ public class UserController {
         userDTO.preInsert(tokenInfo.getId());
         return userService.insert(userDTO);
     }
+
+    /**
+     * 逻辑删除
+     * @return
+     */
+    @GetMapping("/delete/{id}")
+    public Integer delete(@PathVariable("id") Long id) {
+        UserDTO userDTO = new UserDTO();
+        TokenInfo tokenInfo = UserUtil.getUserInfo();
+        userDTO.preDelete(tokenInfo.getId(), id);
+        return userService.update(userDTO);
+    }
 }

@@ -20,7 +20,7 @@ import java.nio.charset.Charset;
  * @Description:
  */
 @Slf4j
-@Component
+//@Component
 public class ResponseCheckFilter extends ZuulFilter {
     @Override
     public String filterType() {

@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
  * @Description:
  */
 @Slf4j
-@Component
+//@Component
 public class GateApiErrorFilter extends ZuulFilter {
     @Override
     public String filterType() {
