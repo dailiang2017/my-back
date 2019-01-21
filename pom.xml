@@ -12,7 +12,6 @@
         <module>base-config</module>
         <module>cache-config</module>
         <module>eureka-server</module>
-        <module>user-server</module>
         <module>gateway-api</module>
         <module>db-config</module>
         <module>my-user-parent</module>

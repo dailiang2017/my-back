@@ -2,7 +2,6 @@ package com.dail.user.service;
 
 import com.dail.user.dto.UserDTO;
 import com.dail.user.dto.UserQueryDTO;
-import com.dail.user.model.User;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -19,17 +18,17 @@ public interface UserService {
      * @param userId
      * @return
      */
-    User findByUserId(Long userId);
+    UserDTO findByUserId(Long userId);
 
     /**
      * 查找所有用户
      * @return
      */
-    List<User> findAll();
+    List<UserDTO> findAll();
 
-    User findByName(String username);
+    UserDTO findByName(String username);
 
-    PageInfo<List<User>> queryUserPage(UserQueryDTO queryDTO);
+    PageInfo<List<UserDTO>> queryUserPage(UserQueryDTO queryDTO);
 
     Integer update(UserDTO userDTO);
 

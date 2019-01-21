@@ -12,8 +12,8 @@
     <artifactId>my-user-parent</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>user-service</module>
         <module>user-service-interface</module>
+        <module>user-service</module>
     </modules>
 
 

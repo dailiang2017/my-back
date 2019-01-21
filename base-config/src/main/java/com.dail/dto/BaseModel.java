@@ -12,7 +12,7 @@ public class BaseModel {
     /**
      * 创建人id
      */
-    private String createId;
+    private Long createId;
 
     /**
      * 创建时间
@@ -22,7 +22,7 @@ public class BaseModel {
     /**
      * 更新人id
      */
-    private String updateId;
+    private Long updateId;
 
     /**
      * 更新时间
