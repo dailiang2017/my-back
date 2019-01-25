@@ -6,6 +6,7 @@ import com.dail.user.service.MenuService;
 import com.dail.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -20,5 +21,15 @@ public class MenuController {
     public List<MenuDTO> queryUserMenu() {
         TokenInfo userDTO = UserUtil.getUserInfo();
         return menuService.queryUserMenu(userDTO.getId());
+    }
+
+    @GetMapping("/queryMenuTree")
+    public List<MenuDTO> queryMenuTree() {
+        return menuService.queryMenuTree();
+    }
+
+    @GetMapping("/deleteMenu/{id}")
+    public Integer deleteMenu(@PathVariable("id") Long id) {
+        return menuService.deleteMenu(id);
     }
 }

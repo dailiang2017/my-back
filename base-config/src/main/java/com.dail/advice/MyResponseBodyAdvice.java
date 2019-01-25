@@ -1,5 +1,6 @@
 package com.dail.advice;
 
+import com.alibaba.fastjson.JSON;
 import com.dail.dto.BaseResult;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.Order;
@@ -16,7 +17,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
  */
 @Order(2)
 @ControllerAdvice
-public class MyResponseBodyAdvice implements ResponseBodyAdvice {
+public class MyResponseBodyAdvice implements ResponseBodyAdvice<Object> {
     @Override
     public boolean supports(MethodParameter methodParameter, Class aClass) {
         return true;
@@ -26,6 +27,8 @@ public class MyResponseBodyAdvice implements ResponseBodyAdvice {
     public Object beforeBodyWrite(Object o, MethodParameter methodParameter, MediaType mediaType, Class aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
         if (o instanceof BaseResult) {
             return o;
+        } else if (o instanceof String) {
+            return JSON.toJSONString(BaseResult.success(o));
         }
         BaseResult baseResult = new BaseResult();
         baseResult.setData(o);

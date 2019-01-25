@@ -1,5 +1,6 @@
 package com.dail.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -10,19 +11,20 @@ import java.io.Serializable;
  * @Description: 相应result类型
  */
 @Data
-public class BaseResult implements Serializable {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class BaseResult<T> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private boolean success = true;
     private String msg;
-    private Object data;
+    private T data;
 
     public static BaseResult success() {
         BaseResult result = new BaseResult();
         return result;
     }
 
-    public static BaseResult success(Object data) {
+    public static <T> BaseResult success(T data) {
         BaseResult result = new BaseResult();
         result.setData(data);
         return result;

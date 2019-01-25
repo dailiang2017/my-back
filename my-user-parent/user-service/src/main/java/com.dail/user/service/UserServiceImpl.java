@@ -71,7 +71,6 @@ public class UserServiceImpl implements UserService {
         ExceptionUtil.isTrue(userDTO == null, "参数不能为空");
         ExceptionUtil.isTrue(StringUtil.isBlankOrEmpty(userDTO.getUsername()), "用户名不能为空");
         ExceptionUtil.isTrue(StringUtil.isBlankOrEmpty(userDTO.getRealname()), "姓名不能为空");
-        ExceptionUtil.isTrue(StringUtil.isBlankOrEmpty(userDTO.getMobile()), "手机不能为空");
         userDTO.setStatus(UserStatusEnum.NORMAL.getCode());
         // 暂时默认
         userDTO.setPassword("123456");

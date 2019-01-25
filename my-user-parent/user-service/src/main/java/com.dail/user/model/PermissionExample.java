@@ -325,63 +325,63 @@ public class PermissionExample {
             return (Criteria) this;
         }
 
-        public Criteria andResourcetypeIsNull() {
-            addCriterion("resourceType is null");
+        public Criteria andResourceTypeIsNull() {
+            addCriterion("resource_type is null");
             return (Criteria) this;
         }
 
-        public Criteria andResourcetypeIsNotNull() {
-            addCriterion("resourceType is not null");
+        public Criteria andResourceTypeIsNotNull() {
+            addCriterion("resource_type is not null");
             return (Criteria) this;
         }
 
-        public Criteria andResourcetypeEqualTo(Byte value) {
-            addCriterion("resourceType =", value, "resourcetype");
+        public Criteria andResourceTypeEqualTo(Byte value) {
+            addCriterion("resource_type =", value, "resourceType");
             return (Criteria) this;
         }
 
-        public Criteria andResourcetypeNotEqualTo(Byte value) {
-            addCriterion("resourceType <>", value, "resourcetype");
+        public Criteria andResourceTypeNotEqualTo(Byte value) {
+            addCriterion("resource_type <>", value, "resourceType");
             return (Criteria) this;
         }
 
-        public Criteria andResourcetypeGreaterThan(Byte value) {
-            addCriterion("resourceType >", value, "resourcetype");
+        public Criteria andResourceTypeGreaterThan(Byte value) {
+            addCriterion("resource_type >", value, "resourceType");
             return (Criteria) this;
         }
 
-        public Criteria andResourcetypeGreaterThanOrEqualTo(Byte value) {
-            addCriterion("resourceType >=", value, "resourcetype");
+        public Criteria andResourceTypeGreaterThanOrEqualTo(Byte value) {
+            addCriterion("resource_type >=", value, "resourceType");
             return (Criteria) this;
         }
 
-        public Criteria andResourcetypeLessThan(Byte value) {
-            addCriterion("resourceType <", value, "resourcetype");
+        public Criteria andResourceTypeLessThan(Byte value) {
+            addCriterion("resource_type <", value, "resourceType");
             return (Criteria) this;
         }
 
-        public Criteria andResourcetypeLessThanOrEqualTo(Byte value) {
-            addCriterion("resourceType <=", value, "resourcetype");
+        public Criteria andResourceTypeLessThanOrEqualTo(Byte value) {
+            addCriterion("resource_type <=", value, "resourceType");
             return (Criteria) this;
         }
 
-        public Criteria andResourcetypeIn(List<Byte> values) {
-            addCriterion("resourceType in", values, "resourcetype");
+        public Criteria andResourceTypeIn(List<Byte> values) {
+            addCriterion("resource_type in", values, "resourceType");
             return (Criteria) this;
         }
 
-        public Criteria andResourcetypeNotIn(List<Byte> values) {
-            addCriterion("resourceType not in", values, "resourcetype");
+        public Criteria andResourceTypeNotIn(List<Byte> values) {
+            addCriterion("resource_type not in", values, "resourceType");
             return (Criteria) this;
         }
 
-        public Criteria andResourcetypeBetween(Byte value1, Byte value2) {
-            addCriterion("resourceType between", value1, value2, "resourcetype");
+        public Criteria andResourceTypeBetween(Byte value1, Byte value2) {
+            addCriterion("resource_type between", value1, value2, "resourceType");
             return (Criteria) this;
         }
 
-        public Criteria andResourcetypeNotBetween(Byte value1, Byte value2) {
-            addCriterion("resourceType not between", value1, value2, "resourcetype");
+        public Criteria andResourceTypeNotBetween(Byte value1, Byte value2) {
+            addCriterion("resource_type not between", value1, value2, "resourceType");
             return (Criteria) this;
         }
 
@@ -455,73 +455,63 @@ public class PermissionExample {
             return (Criteria) this;
         }
 
-        public Criteria andPermissionIsNull() {
-            addCriterion("permission is null");
+        public Criteria andLevelIsNull() {
+            addCriterion("level is null");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionIsNotNull() {
-            addCriterion("permission is not null");
+        public Criteria andLevelIsNotNull() {
+            addCriterion("level is not null");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionEqualTo(String value) {
-            addCriterion("permission =", value, "permission");
+        public Criteria andLevelEqualTo(Byte value) {
+            addCriterion("level =", value, "level");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionNotEqualTo(String value) {
-            addCriterion("permission <>", value, "permission");
+        public Criteria andLevelNotEqualTo(Byte value) {
+            addCriterion("level <>", value, "level");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionGreaterThan(String value) {
-            addCriterion("permission >", value, "permission");
+        public Criteria andLevelGreaterThan(Byte value) {
+            addCriterion("level >", value, "level");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionGreaterThanOrEqualTo(String value) {
-            addCriterion("permission >=", value, "permission");
+        public Criteria andLevelGreaterThanOrEqualTo(Byte value) {
+            addCriterion("level >=", value, "level");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionLessThan(String value) {
-            addCriterion("permission <", value, "permission");
+        public Criteria andLevelLessThan(Byte value) {
+            addCriterion("level <", value, "level");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionLessThanOrEqualTo(String value) {
-            addCriterion("permission <=", value, "permission");
+        public Criteria andLevelLessThanOrEqualTo(Byte value) {
+            addCriterion("level <=", value, "level");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionLike(String value) {
-            addCriterion("permission like", value, "permission");
+        public Criteria andLevelIn(List<Byte> values) {
+            addCriterion("level in", values, "level");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionNotLike(String value) {
-            addCriterion("permission not like", value, "permission");
+        public Criteria andLevelNotIn(List<Byte> values) {
+            addCriterion("level not in", values, "level");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionIn(List<String> values) {
-            addCriterion("permission in", values, "permission");
+        public Criteria andLevelBetween(Byte value1, Byte value2) {
+            addCriterion("level between", value1, value2, "level");
             return (Criteria) this;
         }
 
-        public Criteria andPermissionNotIn(List<String> values) {
-            addCriterion("permission not in", values, "permission");
-            return (Criteria) this;
-        }
-
-        public Criteria andPermissionBetween(String value1, String value2) {
-            addCriterion("permission between", value1, value2, "permission");
-            return (Criteria) this;
-        }
-
-        public Criteria andPermissionNotBetween(String value1, String value2) {
-            addCriterion("permission not between", value1, value2, "permission");
+        public Criteria andLevelNotBetween(Byte value1, Byte value2) {
+            addCriterion("level not between", value1, value2, "level");
             return (Criteria) this;
         }
 
@@ -595,63 +585,63 @@ public class PermissionExample {
             return (Criteria) this;
         }
 
-        public Criteria andOrderNumIsNull() {
-            addCriterion("order_num is null");
+        public Criteria andSortNumIsNull() {
+            addCriterion("sort_num is null");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNumIsNotNull() {
-            addCriterion("order_num is not null");
+        public Criteria andSortNumIsNotNull() {
+            addCriterion("sort_num is not null");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNumEqualTo(Integer value) {
-            addCriterion("order_num =", value, "orderNum");
+        public Criteria andSortNumEqualTo(Integer value) {
+            addCriterion("sort_num =", value, "sortNum");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNumNotEqualTo(Integer value) {
-            addCriterion("order_num <>", value, "orderNum");
+        public Criteria andSortNumNotEqualTo(Integer value) {
+            addCriterion("sort_num <>", value, "sortNum");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNumGreaterThan(Integer value) {
-            addCriterion("order_num >", value, "orderNum");
+        public Criteria andSortNumGreaterThan(Integer value) {
+            addCriterion("sort_num >", value, "sortNum");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNumGreaterThanOrEqualTo(Integer value) {
-            addCriterion("order_num >=", value, "orderNum");
+        public Criteria andSortNumGreaterThanOrEqualTo(Integer value) {
+            addCriterion("sort_num >=", value, "sortNum");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNumLessThan(Integer value) {
-            addCriterion("order_num <", value, "orderNum");
+        public Criteria andSortNumLessThan(Integer value) {
+            addCriterion("sort_num <", value, "sortNum");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNumLessThanOrEqualTo(Integer value) {
-            addCriterion("order_num <=", value, "orderNum");
+        public Criteria andSortNumLessThanOrEqualTo(Integer value) {
+            addCriterion("sort_num <=", value, "sortNum");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNumIn(List<Integer> values) {
-            addCriterion("order_num in", values, "orderNum");
+        public Criteria andSortNumIn(List<Integer> values) {
+            addCriterion("sort_num in", values, "sortNum");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNumNotIn(List<Integer> values) {
-            addCriterion("order_num not in", values, "orderNum");
+        public Criteria andSortNumNotIn(List<Integer> values) {
+            addCriterion("sort_num not in", values, "sortNum");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNumBetween(Integer value1, Integer value2) {
-            addCriterion("order_num between", value1, value2, "orderNum");
+        public Criteria andSortNumBetween(Integer value1, Integer value2) {
+            addCriterion("sort_num between", value1, value2, "sortNum");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNumNotBetween(Integer value1, Integer value2) {
-            addCriterion("order_num not between", value1, value2, "orderNum");
+        public Criteria andSortNumNotBetween(Integer value1, Integer value2) {
+            addCriterion("sort_num not between", value1, value2, "sortNum");
             return (Criteria) this;
         }
 

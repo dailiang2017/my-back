@@ -7,7 +7,6 @@ import com.dail.dto.CacheResult;
 import com.dail.dto.TokenInfo;
 import com.dail.gate.service.IgnoreUrlService;
 import com.dail.util.RedisClient;
-import com.dail.utils.CookieUtils;
 import com.dail.utils.StringUtil;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
@@ -19,7 +18,6 @@ import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
@@ -70,18 +68,12 @@ public class LoginCheckFilter extends ZuulFilter {
         if (request.getMethod().equals(RequestMethod.OPTIONS)) {
             return null;
         }
-        //先从 cookie 中取 token，cookie 中取失败再从 header 中取，两重校验
-        //通过工具类从 Cookie 中取出 token
-        Cookie tokenCookie = CookieUtils.getCookieByName(request, CookieConstant.COOKIE_NAME_TOKEN);
-        String token = "";
-        if (tokenCookie == null || StringUtil.isBlankOrEmpty(tokenCookie.getValue())) {
-            token = request.getHeader(CookieConstant.COOKIE_NAME_TOKEN);
-            if (StringUtil.isBlankOrEmpty(token)) {
-                setUnauthorizedResponse(ctx);
-                return null;
-            }
+
+        String token = request.getHeader(CookieConstant.COOKIE_NAME_TOKEN);
+        if (StringUtil.isBlankOrEmpty(token)) {
+            setUnauthorizedResponse(ctx);
+            return null;
         }
-        token = tokenCookie.getValue();
         // 校验并设置token信息
         checkTokenInfo(ctx, token);
         return null;
@@ -98,11 +90,12 @@ public class LoginCheckFilter extends ZuulFilter {
                 // 其他人登录此账号，被踢出登录，删除token缓存信息
                 redisClient.delete(PrefixConstant.TOKEN_KEY + token);
                 setResponseMsg(requestContext, "您的账号在其他地方登录，请检查密码是否泄漏！");
+            } else {
+                setTokenInfo(requestContext.getResponse(), token, result.getData());
+                requestContext.addZuulRequestHeader(CookieConstant.USER_INFO_KEY, StringUtil.beanToString(result.getData()));
+                requestContext.addZuulRequestHeader(CookieConstant.COOKIE_NAME_TOKEN, token);
             }
         }
-        setTokenInfo(requestContext.getResponse(), token, result.getData());
-        requestContext.addZuulRequestHeader(CookieConstant.USER_INFO_KEY, StringUtil.beanToString(result.getData()));
-        requestContext.addZuulRequestHeader(CookieConstant.COOKIE_NAME_TOKEN, token);
     }
 
     /**
@@ -114,7 +107,6 @@ public class LoginCheckFilter extends ZuulFilter {
     private void setTokenInfo(HttpServletResponse response, String token, TokenInfo user) {
         // 保存token到redis缓存中
         redisClient.set(PrefixConstant.TOKEN_KEY + token, user, RedisConstant.tokenToExpireDefault);
-        CookieUtils.setCookie(response, CookieConstant.COOKIE_NAME_TOKEN, token, RedisConstant.tokenToExpireDefault);
     }
 
     /**
@@ -138,6 +130,10 @@ public class LoginCheckFilter extends ZuulFilter {
     private void setResponseMsg(RequestContext requestContext, String msg) {
         requestContext.setSendZuulResponse(false);
         requestContext.setResponseStatusCode(HttpStatus.SC_UNAUTHORIZED);
-        requestContext.setResponseBody(msg);
+        try {
+            requestContext.setResponseBody(URLEncoder.encode(msg, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 }

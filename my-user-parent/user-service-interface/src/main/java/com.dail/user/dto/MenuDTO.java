@@ -20,6 +20,11 @@ public class MenuDTO {
     private String name;
 
     /**
+     * 资源类型
+     */
+    private Integer resourceType;
+
+    /**
      * 资源路径
      */
     private String url;

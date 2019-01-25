@@ -1,10 +1,12 @@
 package com.dail.user.service;
 
+import com.dail.enums.IsDeletedEnum;
 import com.dail.user.dto.MenuDTO;
 import com.dail.user.mapper.PermissionMapper;
 import com.dail.user.model.Permission;
-import com.dail.user.service.MenuService;
+import com.dail.user.model.PermissionExample;
 import com.dail.utils.BeanUtil;
+import com.dail.utils.ExceptionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +21,30 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public List<MenuDTO> queryUserMenu(Long userId) {
-        List<Permission> list = permissionMapper.queryUserMenu(userId);
+        return getMenuTree(permissionMapper.queryUserMenu(userId));
+    }
+
+    @Override
+    public List<MenuDTO> queryMenuTree() {
+        // 获得所有的菜单
+        PermissionExample example = new PermissionExample();
+        PermissionExample.Criteria criteria = example.createCriteria();
+        criteria.andIsDeletedEqualTo(IsDeletedEnum.N.getCode());
+        return getMenuTree(permissionMapper.selectByExample(example));
+    }
+
+    @Override
+    public Integer deleteMenu(Long id) {
+        ExceptionUtil.isTrue(id == null, "id不能为空");
+        return permissionMapper.deleteByPrimaryKey(id);
+    }
+
+    /**
+     * list 转化tree
+     * @param list
+     * @return
+     */
+    private List<MenuDTO> getMenuTree(List<Permission> list) {
         List<MenuDTO> oneList = new ArrayList<>();
         List<MenuDTO> treeList = new ArrayList<>();
         for (Permission dto : list) {
