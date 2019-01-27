@@ -30,7 +30,7 @@ public class RedisConfig {
     public JedisPool getJedisPool() {
         log.info("==>初始化jedis连接池");
         JedisPoolConfig config = new JedisPoolConfig();
-        JedisPool pool = new JedisPool(config, redisProperties.getHost(), redisProperties.getPort());
+        JedisPool pool = new JedisPool(config, redisProperties.getHost(), redisProperties.getPort(), redisProperties.getTimeout(), redisProperties.getPassword());
         return pool;
     }
 }

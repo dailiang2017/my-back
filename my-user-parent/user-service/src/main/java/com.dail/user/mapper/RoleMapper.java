@@ -1,5 +1,7 @@
 package com.dail.user.mapper;
 
+import com.dail.user.dto.RoleODTO;
+import com.dail.user.dto.RoleQueryDTO;
 import com.dail.user.model.Role;
 import com.dail.user.model.RoleExample;
 import org.apache.ibatis.annotations.Param;
@@ -94,4 +96,6 @@ public interface RoleMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(Role record);
+
+    List<RoleODTO> queryRolePage(RoleQueryDTO dto);
 }

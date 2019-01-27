@@ -14,4 +14,6 @@ public class RedisProperties {
 
     private String host;
     private int port;
+    private int timeout;
+    private String password;
 }

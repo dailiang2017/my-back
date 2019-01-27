@@ -65,6 +65,6 @@ public class StringUtil {
      * @return
      */
     public static String setLikeSQL(String name) {
-        return "%" + name + "%";
+        return "%" + name;
     }
 }
