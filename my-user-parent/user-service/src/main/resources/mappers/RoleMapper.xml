@@ -331,4 +331,43 @@
       and ro.role LIKE concat('%',#{role},'%')
     </if>
   </select>
+
+  <insert id="insertList" parameterType="java.util.List">
+    insert into t_role (role, description,
+      create_id, create_time, update_id,
+      update_time)
+    values
+    <foreach collection="list" item="item" index="index" separator="," >
+      (#{item.role,jdbcType=VARCHAR}, #{item.description,jdbcType=VARCHAR},
+      #{item.createId,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP}, #{item.updateId,jdbcType=VARCHAR},
+      #{item.updateTime,jdbcType=TIMESTAMP})
+    </foreach>
+  </insert>
+
+  <delete id="deleteList" parameterType="java.util.List">
+    <foreach collection="list" item="record" index="index" separator=";"
+             open="" close="">
+      delete from t_role where id = #{record.id,jdbcType=BIGINT}
+    </foreach>
+  </delete>
+
+  <update id="updateList" parameterType="java.util.List">
+    <foreach collection="list" item="record" index="index" separator=";"
+             open="" close="">
+      update t_role
+      set
+      role = #{record.role,jdbcType=VARCHAR},
+      description = #{record.description,jdbcType=VARCHAR},
+      create_id = #{record.createId,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_id = #{record.updateId,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+      WHERE
+      id = #{record.id}
+    </foreach>
+  </update>
+
+  <delete id="deleteAll">
+    delete from t_role
+  </delete>
 </mapper>

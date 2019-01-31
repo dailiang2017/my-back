@@ -98,4 +98,12 @@ public interface RoleMapper {
     int updateByPrimaryKey(Role record);
 
     List<RoleODTO> queryRolePage(RoleQueryDTO dto);
+
+    int insertList(List<Role> list);
+
+    int updateList(List<Role> list);
+
+    int deleteList(List<Role> list);
+
+    int deleteAll();
 }

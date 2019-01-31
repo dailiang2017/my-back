@@ -2,7 +2,7 @@ redis:
   host: 212.129.142.221
   port: 6379
   timeout: 5000
-  password: my-redis-pass-for-2018
+  password: my-redis!-pass#%for--2019
 spring:
   application:
     name: api-gateway-server

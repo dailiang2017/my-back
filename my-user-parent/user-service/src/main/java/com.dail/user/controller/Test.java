@@ -8,8 +8,9 @@ package com.dail.user.controller;
 public class Test {
 
     public static void main(String[] args) {
-        Integer ii = 37973672;
+        Long ii = 1000040170145L;
         int aa = ii.hashCode() % 2;
+        System.out.println(ii.hashCode());
         System.out.println(aa);
     }
 }
