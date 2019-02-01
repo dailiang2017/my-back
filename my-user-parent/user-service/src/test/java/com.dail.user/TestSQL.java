@@ -1,7 +1,7 @@
 package com.dail.user;
 
 import com.dail.UserServiceApplication;
-import com.dail.user.mapper.RoleMapper;
+import com.dail.user.mapper.RoleDAO;
 import com.dail.user.model.Role;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +23,7 @@ import java.util.List;
 public class TestSQL {
 
     @Autowired
-    private RoleMapper roleMapper;
+    private RoleDAO roleDAO;
 
     private static final int total = 10000;
 
@@ -35,14 +35,14 @@ public class TestSQL {
             Role role = new Role();
             role.setRole("role" + i);
             role.setDescription("description");
-            role.setCreateId("0");
+            role.setCreator("0");
             role.setCreateTime(now);
-            role.setUpdateId("0");
-            role.setUpdateTime(now);
+            role.setModifier("0");
+            role.setModifyTime(now);
             list.add(role);
         }
         long t0 = System.currentTimeMillis();
-        roleMapper.insertList(list);
+        roleDAO.insertList(list);
         long t1 = System.currentTimeMillis();
         System.out.println(t1 - t0);
     }
@@ -56,15 +56,15 @@ public class TestSQL {
             Role role = new Role();
             role.setRole("role" + i);
             role.setDescription("description");
-            role.setCreateId("0");
+            role.setCreator("0");
             role.setCreateTime(now);
-            role.setUpdateId("0");
-            role.setUpdateTime(now);
+            role.setModifier("0");
+            role.setModifyTime(now);
             list.add(role);
         }
         long t0 = System.currentTimeMillis();
-        roleMapper.deleteAll();
-        roleMapper.updateList(list);
+        roleDAO.deleteAll();
+        roleDAO.updateList(list);
         long t1 = System.currentTimeMillis();
         System.out.println(t1 - t0);
     }
@@ -77,10 +77,10 @@ public class TestSQL {
             Role role = new Role();
             role.setRole("role" + i);
             role.setDescription("description");
-            role.setCreateId("0");
+            role.setCreator("0");
             role.setCreateTime(now);
-            role.setUpdateId("0");
-            role.setUpdateTime(now);
+            role.setModifier("0");
+            role.setModifyTime(now);
             list.add(role);
         }
 
@@ -89,15 +89,15 @@ public class TestSQL {
             Role role = new Role();
             role.setRole("role" + i);
             role.setDescription("description");
-            role.setCreateId("0");
+            role.setCreator("0");
             role.setCreateTime(now);
-            role.setUpdateId("0");
-            role.setUpdateTime(now);
+            role.setModifier("0");
+            role.setModifyTime(now);
             list2.add(role);
         }
         long t0 = System.currentTimeMillis();
-        roleMapper.updateList(list);
-        roleMapper.insertList(list2);
+        roleDAO.updateList(list);
+        roleDAO.insertList(list2);
         long t1 = System.currentTimeMillis();
         System.out.println(t1 - t0);
     }

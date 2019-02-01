@@ -6,7 +6,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://212.129.142.221:3306/my_mall?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT
     username: root
-    password: 123456
+    password: my-sql!@#pass-for-2019
     dbcp2:
       validation-query: SELECT 1   #验证连接是否有效。此参数必须设置为非空字符串，下面三项设置成true才能生效
       test-while-idle: true    #指明连接是否被空闲连接回收器(如果有)进行检验.如果检测失败,则连接将被从池中去除

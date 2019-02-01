@@ -40,14 +40,14 @@ public class UserController {
     @PostMapping("/update")
     public Integer update(@RequestBody UserDTO userDTO) {
         TokenInfo tokenInfo = UserUtil.getUserInfo();
-        userDTO.preUpdate(tokenInfo.getId());
+        userDTO.preUpdate(tokenInfo.getUsername());
         return userService.update(userDTO);
     }
 
     @PostMapping("/insert")
     public Integer insert(@RequestBody UserDTO userDTO) {
         TokenInfo tokenInfo = UserUtil.getUserInfo();
-        userDTO.preInsert(tokenInfo.getId());
+        userDTO.preInsert(tokenInfo.getUsername());
         return userService.insert(userDTO);
     }
 
@@ -59,7 +59,7 @@ public class UserController {
     public Integer delete(@PathVariable("id") Long id) {
         UserDTO userDTO = new UserDTO();
         TokenInfo tokenInfo = UserUtil.getUserInfo();
-        userDTO.preDelete(tokenInfo.getId(), id);
+        userDTO.preDelete(tokenInfo.getUsername(), id);
         return userService.update(userDTO);
     }
 }

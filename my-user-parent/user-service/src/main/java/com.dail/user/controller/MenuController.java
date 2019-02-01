@@ -35,7 +35,7 @@ public class MenuController {
     @PostMapping("/addMenu")
     public Integer addMenu(@RequestBody MenuIDTO dto) {
         TokenInfo userDTO = UserUtil.getUserInfo();
-        dto.setUserId(userDTO.getId());
+        dto.setUsername(userDTO.getUsername());
         return menuService.addMenu(dto);
     }
 }

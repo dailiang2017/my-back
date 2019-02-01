@@ -30,5 +30,5 @@ public class MenuIDTO {
      */
     private Integer level;
 
-    private Long userId;
+    private String username;
 }

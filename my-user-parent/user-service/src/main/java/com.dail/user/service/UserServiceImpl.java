@@ -4,7 +4,7 @@ import com.dail.enums.IsDeletedEnum;
 import com.dail.enums.UserStatusEnum;
 import com.dail.user.dto.UserDTO;
 import com.dail.user.dto.UserQueryDTO;
-import com.dail.user.mapper.UserMapper;
+import com.dail.user.mapper.UserDAO;
 import com.dail.user.model.User;
 import com.dail.user.model.UserExample;
 import com.dail.utils.BeanUtil;
@@ -26,23 +26,23 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserMapper userMapper;
+    private UserDAO userDAO;
 
     @Override
     public UserDTO findByUserId(Long userId) {
-        User user = userMapper.selectByPrimaryKey(userId);
+        User user = userDAO.selectByPrimaryKey(userId);
         return BeanUtil.copyProperties(user, UserDTO.class);
     }
 
     @Override
     public List<UserDTO> findAll() {
-        List<User> list = userMapper.selectAll();
+        List<User> list = userDAO.selectAll();
         return BeanUtil.copyPropertiesForList(list, UserDTO.class);
     }
 
     @Override
     public UserDTO findByName(String username) {
-        User user = userMapper.findByName(username);
+        User user = userDAO.findByName(username);
         return BeanUtil.copyProperties(user, UserDTO.class);
     }
 
@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
         }
         criteria.andIsDeletedEqualTo(IsDeletedEnum.N.getCode());
         return PageHelper.startPage(queryDTO.getPageNo(), queryDTO.getPageSize()).doSelectPageInfo(() -> {
-            userMapper.selectByExample(userExample);
+            userDAO.selectByExample(userExample);
         });
     }
 
@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
     public Integer update(UserDTO userDTO) {
         ExceptionUtil.isTrue(userDTO == null, "参数不能为空");
         ExceptionUtil.isTrue(userDTO.getId() == null, "用户id不能为空");
-        return userMapper.updateByPrimaryKeySelective(BeanUtil.copyProperties(userDTO, User.class));
+        return userDAO.updateByPrimaryKeySelective(BeanUtil.copyProperties(userDTO, User.class));
     }
 
     @Override
@@ -75,6 +75,6 @@ public class UserServiceImpl implements UserService {
         // 暂时默认
         userDTO.setPassword("123456");
         userDTO.setSalt("salt");
-        return userMapper.insertSelective(BeanUtil.copyProperties(userDTO, User.class));
+        return userDAO.insertSelective(BeanUtil.copyProperties(userDTO, User.class));
     }
 }

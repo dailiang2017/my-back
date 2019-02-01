@@ -3,10 +3,9 @@ package com.dail.user.service;
 import com.dail.enums.IsDeletedEnum;
 import com.dail.user.dto.RoleODTO;
 import com.dail.user.dto.RoleQueryDTO;
-import com.dail.user.mapper.RoleMapper;
-import com.dail.user.mapper.UserMapper;
+import com.dail.user.mapper.RoleDAO;
+import com.dail.user.mapper.UserDAO;
 import com.dail.user.model.RoleExample;
-import com.dail.user.model.UserExample;
 import com.dail.utils.StringUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -19,9 +18,9 @@ import java.util.List;
 public class RoleServiceImpl implements RoleService {
 
     @Autowired
-    private RoleMapper roleMapper;
+    private RoleDAO roleDAO;
     @Autowired
-    private UserMapper userMapper;
+    private UserDAO userDAO;
 
     @Override
     public PageInfo<List<RoleODTO>> queryPage(RoleQueryDTO dto) {
@@ -32,9 +31,9 @@ public class RoleServiceImpl implements RoleService {
             criteria.andRoleLike(StringUtil.setLikeSQL(dto.getRole()));
         }
         criteria.andIsDeletedEqualTo(IsDeletedEnum.N.getCode());
-        List<RoleODTO> list = roleMapper.queryRolePage(dto);
+        List<RoleODTO> list = roleDAO.queryRolePage(dto);
         return PageHelper.startPage(dto.getPageNo(), dto.getPageSize()).doSelectPageInfo(() -> {
-            roleMapper.selectByExample(example);
+            roleDAO.selectByExample(example);
         });
     }
 }

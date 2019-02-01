@@ -30,29 +30,25 @@ public class UserDTO extends BaseModel {
 
     private String adress;
 
-    private Date lastLoginTime;
-
-    private String remark;
-
-    public void preInsert(Long userId) {
+    public void preInsert(String username) {
         Date now = new Date();
-        this.setCreateId(userId);
-        this.setUpdateId(userId);
+        this.setCreator(username);
+        this.setModifier(username);
         this.setCreateTime(now);
-        this.setUpdateTime(now);
+        this.setModifyTime(now);
     }
 
-    public void preUpdate(Long userId) {
+    public void preUpdate(String username) {
         Date now = new Date();
-        this.setUpdateId(userId);
-        this.setUpdateTime(now);
+        this.setModifier(username);
+        this.setModifyTime(now);
     }
 
-    public void preDelete(Long userId, Long id) {
+    public void preDelete(String username, Long id) {
         Date now = new Date();
         this.setId(id);
-        this.setUpdateId(userId);
-        this.setUpdateTime(now);
+        this.setModifier(username);
+        this.setModifyTime(now);
         this.setIsDeleted(IsDeletedEnum.Y.getCode());
     }
 }

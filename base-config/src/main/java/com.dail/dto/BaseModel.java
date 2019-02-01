@@ -10,9 +10,9 @@ public class BaseModel {
     private Long id;
 
     /**
-     * 创建人id
+     * 创建人
      */
-    private Long createId;
+    private String creator;
 
     /**
      * 创建时间
@@ -20,14 +20,14 @@ public class BaseModel {
     private Date createTime;
 
     /**
-     * 更新人id
+     * 最后修改人
      */
-    private Long updateId;
+    private String modifier;
 
     /**
-     * 更新时间
+     * 最后修改时间
      */
-    private Date updateTime;
+    private Date modifyTime;
 
     /**
      * N正常,Y删除

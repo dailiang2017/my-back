@@ -3,7 +3,7 @@ package com.dail.user.service;
 import com.dail.enums.IsDeletedEnum;
 import com.dail.user.dto.MenuDTO;
 import com.dail.user.dto.MenuIDTO;
-import com.dail.user.mapper.PermissionMapper;
+import com.dail.user.mapper.PermissionDAO;
 import com.dail.user.model.Permission;
 import com.dail.user.model.PermissionExample;
 import com.dail.utils.BeanUtil;
@@ -20,11 +20,11 @@ import java.util.List;
 public class MenuServiceImpl implements MenuService {
 
     @Autowired
-    private PermissionMapper permissionMapper;
+    private PermissionDAO permissionDAO;
 
     @Override
     public List<MenuDTO> queryUserMenu(Long userId) {
-        return getMenuTree(permissionMapper.queryUserMenu(userId));
+        return getMenuTree(permissionDAO.queryUserMenu(userId));
     }
 
     @Override
@@ -33,13 +33,13 @@ public class MenuServiceImpl implements MenuService {
         PermissionExample example = new PermissionExample();
         PermissionExample.Criteria criteria = example.createCriteria();
         criteria.andIsDeletedEqualTo(IsDeletedEnum.N.getCode());
-        return getMenuTree(permissionMapper.selectByExample(example));
+        return getMenuTree(permissionDAO.selectByExample(example));
     }
 
     @Override
     public Integer deleteMenu(Long id) {
         ExceptionUtil.isTrue(id == null, "id不能为空");
-        return permissionMapper.deleteByPrimaryKey(id);
+        return permissionDAO.deleteByPrimaryKey(id);
     }
 
     @Override
@@ -47,10 +47,10 @@ public class MenuServiceImpl implements MenuService {
     public Integer addMenu(MenuIDTO dto) {
         ExceptionUtil.isTrue(StringUtil.isBlankOrEmpty(dto.getName()), "资源名称不能为空");
         ExceptionUtil.isTrue(dto.getResourceType() == null, "资源类型不能为空");
-        int sortNum = permissionMapper.selectMaxSortNum();
+        int sortNum = permissionDAO.selectMaxSortNum();
         Permission record = BeanUtil.copyProperties(dto, Permission.class);
-        record.preInsert(dto.getUserId(), sortNum + 1);
-        return permissionMapper.insertSelective(record);
+        record.preInsert(dto.getUsername(), sortNum + 1);
+        return permissionDAO.insertSelective(record);
     }
 
     /**
