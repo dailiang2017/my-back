@@ -1,5 +1,7 @@
 package com.dail.user.model;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -7,6 +9,7 @@ import java.util.Date;
  * t_role
  * @author 
  */
+@Data
 public class Role implements Serializable {
     /**
      * 主键
@@ -50,67 +53,17 @@ public class Role implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public Long getId() {
-        return id;
+    public void preInsert(String username) {
+        Date now = new Date();
+        this.setCreator(username);
+        this.setModifier(username);
+        this.setCreateTime(now);
+        this.setModifyTime(now);
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getModifier() {
-        return modifier;
-    }
-
-    public void setModifier(String modifier) {
-        this.modifier = modifier;
-    }
-
-    public Date getModifyTime() {
-        return modifyTime;
-    }
-
-    public void setModifyTime(Date modifyTime) {
-        this.modifyTime = modifyTime;
-    }
-
-    public String getIsDeleted() {
-        return isDeleted;
-    }
-
-    public void setIsDeleted(String isDeleted) {
-        this.isDeleted = isDeleted;
+    public void preUpdate(String username) {
+        Date now = new Date();
+        this.setModifier(username);
+        this.setModifyTime(now);
     }
 }

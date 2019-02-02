@@ -13,7 +13,7 @@ public class BusinessException extends BaseException {
         this.code = ErrorCodeEnum.BUSSINESS_EXCEPTION.getCode();
         this.message =message;
     }
-    public BusinessException(String code, String message){
+    public BusinessException(int code, String message){
         this.code = code;
         this.message = message;
     }

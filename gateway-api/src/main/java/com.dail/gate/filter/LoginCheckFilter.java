@@ -5,6 +5,7 @@ import com.dail.constant.PrefixConstant;
 import com.dail.constant.RedisConstant;
 import com.dail.dto.CacheResult;
 import com.dail.dto.TokenInfo;
+import com.dail.enums.ErrorCodeEnum;
 import com.dail.gate.service.IgnoreUrlService;
 import com.dail.util.RedisClient;
 import com.dail.utils.StringUtil;
@@ -12,7 +13,6 @@ import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.stereotype.Component;
@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 /**
  * @Auther: dailiang
@@ -68,6 +66,7 @@ public class LoginCheckFilter extends ZuulFilter {
         if (request.getMethod().equals(RequestMethod.OPTIONS)) {
             return null;
         }
+        ctx.getResponse().setContentType("text/html;charset=UTF-8");
 
         String token = request.getHeader(CookieConstant.COOKIE_NAME_TOKEN);
         if (StringUtil.isBlankOrEmpty(token)) {
@@ -82,14 +81,14 @@ public class LoginCheckFilter extends ZuulFilter {
     private void checkTokenInfo(RequestContext requestContext, String token) {
         CacheResult<TokenInfo> result = redisClient.get(PrefixConstant.TOKEN_KEY + token, TokenInfo.class);
         if (result.getData() == null) {
-            setResponseMsg(requestContext, "登录已过期！");
+            setResponseMsg(requestContext, ErrorCodeEnum.LOGIN_EXPIRE);
         } else {
             Long userid = result.getData().getId();
             CacheResult<String> uniqueToken = redisClient.get(PrefixConstant.USERID_KEY + userid, String.class);
             if (!token.equals(uniqueToken.getData())) {
                 // 其他人登录此账号，被踢出登录，删除token缓存信息
                 redisClient.delete(PrefixConstant.TOKEN_KEY + token);
-                setResponseMsg(requestContext, "您的账号在其他地方登录，请检查密码是否泄漏！");
+                setResponseMsg(requestContext, ErrorCodeEnum.REPEAT_LOGIN);
             } else {
                 setTokenInfo(requestContext.getResponse(), token, result.getData());
                 requestContext.addZuulRequestHeader(CookieConstant.USER_INFO_KEY, StringUtil.beanToString(result.getData()));
@@ -115,25 +114,18 @@ public class LoginCheckFilter extends ZuulFilter {
      */
     private void setUnauthorizedResponse(RequestContext requestContext) {
         requestContext.setSendZuulResponse(false);
-        requestContext.setResponseStatusCode(HttpStatus.SC_UNAUTHORIZED);
-        try {
-            requestContext.setResponseBody(URLEncoder.encode("没有登录权限！", "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        // 同HttpStatus一致
+        requestContext.setResponseStatusCode(ErrorCodeEnum.UNAUTHORIZED.getCode());
+        requestContext.setResponseBody(ErrorCodeEnum.UNAUTHORIZED.getRemark());
     }
 
     /**
      *  设置返回信息 401
      * @param requestContext
      */
-    private void setResponseMsg(RequestContext requestContext, String msg) {
+    private void setResponseMsg(RequestContext requestContext, ErrorCodeEnum codeEnum) {
         requestContext.setSendZuulResponse(false);
-        requestContext.setResponseStatusCode(HttpStatus.SC_UNAUTHORIZED);
-        try {
-            requestContext.setResponseBody(URLEncoder.encode(msg, "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        requestContext.setResponseStatusCode(codeEnum.getCode());
+        requestContext.setResponseBody(codeEnum.getRemark());
     }
 }

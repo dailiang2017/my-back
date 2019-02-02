@@ -256,22 +256,6 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
 
-  <select id="queryRolePage" parameterType="com.dail.user.dto.RoleQueryDTO"
-          resultType="com.dail.user.dto.RoleODTO">
-    SELECT
-    ro.role,
-    ro.description,
-    ro.create_time,
-    us.username
-    FROM
-    t_role ro
-    INNER JOIN t_user us ON ro.create_id = us.id AND us.is_deleted = 'N'
-    WHERE ro.is_deleted = 'N'
-    <if test=" role != null and role != '' ">
-      and ro.role LIKE concat('%',#{role},'%')
-    </if>
-  </select>
-
   <insert id="insertList" parameterType="java.util.List">
     insert into t_role (role, description,
     create_id, create_time, update_id,
